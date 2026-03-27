@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaśmina Kasenko — AI & Digital Education</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root {
+            --bg:      #fcfaf7;
+            --card:    #ffffff;
+            --card-sub: #f3f5f2;
+            --border:  #e2e8e1;
+            --accent:  #5a7360; /* Sage Green */
+            --accent-soft: #e9eee8;
+            --accent-deep: #3d4d40;
+            --text:    #2d3436;
+            --text-hi: #1a1a1a;
+            --muted:   #718093;
+            --radius:  16px;
+            --shadow:  0 10px 30px rgba(0,0,0,0.04), 0 1px 8px rgba(0,0,0,0.02);
+        }
+
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* --- MODAL POPUP --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(45, 52, 70, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+        .modal-content {
+            background: var(--card);
+            padding: 48px;
+            border-radius: var(--radius);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--border);
+            animation: slideUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close-btn:hover { color: var(--text-hi); }
+        .modal-badge {
+            display: inline-block;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-family: 'DM Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--text-hi);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        .modal-text {
+            color: var(--muted);
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .modal-action {
+            display: inline-block;
+            padding: 14px 32px;
+            background: var(--accent);
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        .modal-action:hover {
+            background: var(--accent-deep);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- NAVIGATION --- */
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(252, 250, 247, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            padding: 0 48px;
+            overflow-x: auto;
+            justify-content: center;
+        }
+        .nav::-webkit-scrollbar { display: none; }
+        .nav-item {
+            padding: 20px 24px;
+            font-size: 12px;
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-item:hover { color: var(--accent); }
+        .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* --- HERO --- */
+        .hero {
+            padding: 100px 48px 60px;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-soft);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-family: 'DM Mono', monospace;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        
+        .hero-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 6vw, 80px);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-hi);
+            letter-spacing: -0.01em;
+        }
+        .hero-name em { font-style: italic; color: var(--accent); font-weight: 400; }
+        
+        .hero-role {
+            margin-top: 18px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--muted);
+            max-width: 500px;
+        }
+
+        .refs-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 36px;
+            background: var(--accent);
+            color: white;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(90, 115, 96, 0.2);
+        }
+        .refs-btn:hover { 
+            background: var(--accent-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(90, 115, 96, 0.3);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 48px 100px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin: 100px 0 48px;
+        }
+        .section-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: 0.15;
+            line-height: 1;
+        }
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-hi);
+            letter-spacing: -0.02em;
+        }
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* --- METHODOLOGY CALLOUT --- */
+        .methodology-box {
+            background: var(--accent-soft);
+            padding: 32px;
+            border-radius: var(--radius);
+            margin-bottom: 40px;
+            border-left: 6px solid var(--accent);
+        }
+        .methodology-box h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--accent-deep);
+            margin-bottom: 10px;
+        }
+
+        /* --- SPEECH TABLE --- */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: var(--radius);
+            background: var(--card);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .speech-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        .speech-table th {
+            background: var(--card-sub);
+            padding: 24px 20px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--accent);
+            letter-spacing: 0.12em;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+        .speech-table td {
+            padding: 30px 20px;
+            font-size: 15px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            color: var(--text);
+        }
+        .speech-table tr:last-child td { border-bottom: none; }
+        .speech-table tr:hover { background: #fdfdfd; }
+        
+        .part-name {
+            font-weight: 700;
+            color: var(--text-hi);
+            font-size: 17px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* --- EXPERIENCE CARDS --- */
+        .exp-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            overflow: hidden;
+        }
+        .exp-card.active {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+        .exp-header {
+            padding: 32px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .exp-title h3 {
+            font-size: 22px;
+            color: var(--text-hi);
+            margin-bottom: 6px;
+            font-family: 'Playfair Display', serif;
+        }
+        .exp-title p {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .exp-content {
+            display: none;
+            padding: 0 32px 32px;
+            background: #fcfdfc;
+            border-top: 1px solid var(--border);
+        }
+        .exp-card.active .exp-content { display: block; }
+        .exp-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        .exp-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 14px;
+            font-size: 16px;
+            color: var(--text);
+        }
+        .exp-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        /* --- STATS --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        .stat-item {
+            background: var(--card);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .stat-val {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        /* --- EDUCATION --- */
+        .edu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .edu-item {
+            padding: 30px;
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+        .edu-item:hover { transform: translateY(-5px); }
+        .edu-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .edu-title {
+            font-weight: 700;
+            color: var(--text-hi);
+            font-size: 17px;
+            line-height: 1.4;
+        }
+
+        /* --- HIGHLIGHT --- */
+        .highlight-text {
+            color: var(--accent-deep);
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-color: var(--accent);
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background: #f1f3f0;
+            padding: 100px 48px;
+            text-align: center;
+        }
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+        .contact-link {
+            text-decoration: none;
+            color: var(--text-hi);
+            font-size: 20px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .contact-link:hover { color: var(--accent); }
+        .contact-label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 850px) {
+            .hero { flex-direction: column; text-align: center; padding: 60px 24px; }
+            .hero-right { margin-top: 20px; }
+            .container { padding: 0 24px; }
+            .nav { padding: 0 10px; }
+            .contact-grid { gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MODAL POPUP -->
+    <div id="proposal-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal()">×</button>
+            <span class="modal-badge">Propozycja Konferencyjna</span>
+            <h3 class="modal-title">Dla Pani Karoliny Śliwińskiej</h3>
+            <p class="modal-text">To propozycja przygotowana specjalnie na potrzeby targów, uatrakcyjniająca ofertę pigułką praktycznej wiedzy. Uczestnicy długo nie zapomną udziału w prelekcji, a dla każdego znajdzie się coś dobrego :).</p>
+            <button class="modal-action" onclick="closeModal()">Przejdź do prezentacji</button>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-item active" onclick="scrollToSec('speech', this)">Plan wystąpienia</div>
+        <div class="nav-item" onclick="scrollToSec('experience', this)">Doświadczenie</div>
+        <div class="nav-item" onclick="scrollToSec('stats', this)">Wystąpienia</div>
+        <div class="nav-item" onclick="scrollToSec('education', this)">Edukacja</div>
+        <div class="nav-item" onclick="scrollToSec('contact', this)">Kontakt</div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-left">
+            <div class="badge">Ekspertka AI & Edukacji Cyfrowej</div>
+            <h1 class="hero-name">Jaśmina<br><em>Kasenko</em></h1>
+            <p class="hero-role">AI Trainer • Digital Strategist • Academic Coach.</p>
+        </div>
+        <div class="hero-right">
+            <a href="https://drive.google.com/drive/folders/1JE_uKaCPFuhV143zciaH-rX01DHVTx3k?usp=sharing" target="_blank" class="refs-btn">
+                Zobacz Referencje
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- METHODOLOGY -->
+        <div class="methodology-box">
+            <h4>Moja Metodologia</h4>
+            <p>Działam w oparciu o <span class="highlight-text">aktywne nauczanie</span> oraz <span class="highlight-text">uczenie przez robienie (learning by doing)</span>. Wierzę, że technologia AI staje się użyteczna tylko wtedy, gdy uczestnik potrafi samodzielnie wypracować rozwiązanie w trakcie warsztatu.</p>
+        </div>
+        
+        <!-- SECTION 01: SPEECH PLAN -->
+        <section id="speech">
+            <div class="section-header">
+                <div class="section-num">01</div>
+                <h2 class="section-title">Plan Przemówienia</h2>
+                <div class="section-line"></div>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="speech-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Część wystąpienia</th>
+                            <th style="width: 30%;">Cel edukacyjny</th>
+                            <th style="width: 25%;">Wartość dla słuchacza</th>
+                            <th style="width: 20%;">Psychologia sukcesu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="part-name">Fundamenty & Eksperyment</span>
+                                <small style="color:var(--muted)">Demistyfikacja LLM</small>
+                            </td>
+                            <td>Rozróżniania realnych możliwości AI od medialnego szumu. Uczestnicy poznają „podstawy podstaw”, które pozwolą im zabłysnąć.</td>
+                            <td>Przedstawiam AI jako standardowe narzędzie pracy. Porządkujemy wiedzę.</td>
+                            <td>Buduje pewność siebie u słuchacza. Otwiera na dalszą naukę poprzez szybki sukces.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Przegląd Narzędzi</span>
+                                <small style="color:var(--muted)">Gemini, NotebookLM, Claude</small>
+                            </td>
+                            <td>Top 3 narzędzia oraz ukryte sztuczki, które oszczędzają kilka godzin tygodniowo.</td>
+                            <td>Każdy uczestnik (od produkcji po usługi) znajdzie tu rozwiązanie swojego problemu.</td>
+                            <td>Skupienie na uniwersalnych bolączkach (brak czasu) gwarantuje zaangażowanie.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Automatyzacja Live</span>
+                                <small style="color:var(--muted)">Integracja CRM + AI</small>
+                            </td>
+                            <td>Pokazanie, jak system sam przygotowuje ofertę po rozmowie z klientem dzięki połączeniu dwóch aplikacji.</td>
+                            <td>Udowadniam, że AI nie wymaga ogromnych budżetów ani sztabu programistów.</td>
+                            <td>Inspiracja, którą każdy może odnieść do własnej pracy.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Bezpieczeństwo Danych</span>
+                                <small style="color:var(--muted)">Metoda Sandbox</small>
+                            </td>
+                            <td>Tworzenie bezpiecznej przestrzeni dla danych firmowych i zasad promptowania bez wycieków.</td>
+                            <td>Rozbrojenie najczęstszego lęku przed technologią.</td>
+                            <td>Wiedza daje poczucie kontroli i bezpieczeństwa zawodowego.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Strategia „Na Dziś”</span>
+                                <small style="color:var(--muted)">Roadmapa wdrożenia</small>
+                            </td>
+                            <td>Uczestnik wychodzi z gotową listą zadań i realną umiejętnością promptowania.</td>
+                            <td>Konkretny plan działania zwiększa merytoryczną wartość wystąpienia.</td>
+                            <td>Satysfakcja z użyteczności. Słuchacz wie dokładnie, co zrobić po powrocie do biura.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 02: EXPERIENCE -->
+        <section id="experience">
+            <div class="section-header">
+                <div class="section-num">02</div>
+                <h2 class="section-title">Doświadczenie Zawodowe</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="exp-card active">
+                <div class="exp-header" onclick="toggleCard(this)">
+                    <div class="exp-title">
+                        <h3>NASK & Ministerstwo Cyfryzacji</h3>
+                        <p>Edukacja Cyfrowa i Projekty Publiczne</p>
+                    </div>
+                </div>
+                <div class="exp-content">
+                    <ul class="exp-list">
+                        <li>Praca przy projektach edukacji cyfrowej realizowanych we współpracy z NASK oraz Ministerstwem Cyfryzacji.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exp-card">
+                <div class="exp-header" onclick="toggleCard(this)">
+                    <div class="exp-title">
+                        <h3>UNHCR — Agenda ONZ</h3>
+                        <p>Finance and Admin Associate</p>
+                    </div>
+                </div>
+                <div class="exp-content">
+                    <ul class="exp-list">
+                        <li>Praca w agendzie ONZ (Biuro Wysokiego Komisarza ds. Uchodźców) podczas intensywnego kryzysu uchodźczego.</li>
+                        <li>Zarządzanie procesami administracyjnymi i koordynacja działań w środowisku międzynarodowym.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exp-card">
+                <div class="exp-header" onclick="toggleCard(this)">
+                    <div class="exp-title">
+                        <h3>Szkolenia dla Biznesu i Nauki</h3>
+                        <p>Trenerka i Konsultantka</p>
+                    </div>
+                </div>
+                <div class="exp-content">
+                    <p style="margin-bottom: 10px;">Specjalizuję się w <span class="highlight-text">pracy z biznesem oraz kadrą akademicką</span>, pomagając wdrażać narzędzia AI w codzienną praktykę zawodową.</p>
+                    <ul class="exp-list">
+                        <li>Szkolenie wykładowców i kadry zarządzającej: <span style="font-weight:600">SGGW w Warszawie</span>, <span style="font-weight:600">WSB Merito</span> (Akademia AI, Akademia Certyfikowanego Trenera), <span style="font-weight:600">Politechnika Śląska</span>, <span style="font-weight:600">Akademia Humanitas</span>.</li>
+                        <li>Warsztaty z transformacji cyfrowej dla średnich i dużych przedsiębiorstw.</li>
+                        <li>Mentoring w zakresie budowania nowoczesnej infrastruktury dydaktycznej.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exp-card">
+                <div class="exp-header" onclick="toggleCard(this)">
+                    <div class="exp-title">
+                        <h3>HHU Düsseldorf</h3>
+                        <p>Samodzielny Nauczyciel Akademicki</p>
+                    </div>
+                </div>
+                <div class="exp-content">
+                    <ul class="exp-list">
+                        <li>Prowadzenie seminariów ocenionych jako „Doskonałe” dla międzynarodowych grup studentów.</li>
+                        <li>Zarządzanie procesem dydaktycznym i cyfrowymi platformami edukacyjnymi.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 03: STATS / SPEAKING -->
+        <section id="stats">
+            <div class="section-header">
+                <div class="section-num">03</div>
+                <h2 class="section-title">Wystąpienia & Sukcesy</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-val">Karpacz</div>
+                    <div class="stat-label">Forum Ekonomiczne (kilka edycji)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">Mikołajki</div>
+                    <div class="stat-label">Forum Samorządowe</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">40+</div>
+                    <div class="stat-label">Prowadzonych Mentees</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+                <div class="edu-item">
+                    <span class="edu-label">Wyróżnienie</span>
+                    <p class="edu-title">Joseph Conrad Fellowship — stypendium badawcze</p>
+                </div>
+                <div class="edu-item">
+                    <span class="edu-label">Wyróżnienie</span>
+                    <p class="edu-title">Deutschlandstipendium — osiągnięcia społeczne i naukowe</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 04: EDUCATION -->
+        <section id="education">
+            <div class="section-header">
+                <div class="section-num">04</div>
+                <h2 class="section-title">Edukacja & Dalsza Droga</h2>
+                <div class="section-line"></div>
+            </div>
+            
+            <div class="edu-grid">
+                <div class="edu-item" style="border: 2px solid var(--accent);">
+                    <span class="edu-label" style="color: var(--accent-deep); font-weight: 800;">Dalszy Krok / In Progress</span>
+                    <p class="edu-title" style="font-size: 20px;">Doktorat: ICT and Education</p>
+                </div>
+                <div class="edu-item">
+                    <span class="edu-label">Uniwersytet Warszawski</span>
+                    <p class="edu-title">Zarządzanie Projektami (Podyplomowe)</p>
+                </div>
+                <div class="edu-item">
+                    <span class="edu-label">Europejska Akademia Dyplomacji</span>
+                    <p class="edu-title">Executive Diploma in Art of Diplomacy</p>
+                </div>
+                <div class="edu-item">
+                    <span class="edu-label">HHU Düsseldorf</span>
+                    <p class="edu-title">MA Comparative Studies (Z wyróżnieniem)</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer" id="contact">
+        <h2 class="section-title" style="margin-bottom: 12px; font-family: 'Playfair Display', serif;">Zapraszam do współpracy</h2>
+        
+        <div class="contact-grid">
+            <div>
+                <span class="contact-label">E-mail</span>
+                <a href="mailto:jkasenko@scholarly.edu.pl" class="contact-link">jkasenko@scholarly.edu.pl</a>
+            </div>
+            <div>
+                <span class="contact-label">Telefon</span>
+                <a href="tel:+48690574096" class="contact-link">+48 690 574 096</a>
+            </div>
+            <div>
+                <span class="contact-label">Portfolio</span>
+                <a href="https://drive.google.com/drive/folders/1JE_uKaCPFuhV143zciaH-rX01DHVTx3k?usp=sharing" target="_blank" class="contact-link" style="color: var(--accent);">Referencje Drive →</a>
+            </div>
+        </div>
+        
+        <p style="margin-top: 80px; font-size: 12px; opacity: 0.5; letter-spacing: 0.05em; text-transform: uppercase;">
+            &copy; 2026 Jaśmina Kasenko. Designed for Digital Excellence.
+        </p>
+    </footer>
+
+    <script>
+        function closeModal() {
+            document.getElementById('proposal-modal').style.display = 'none';
+        }
+
+        function toggleCard(header) {
+            const card = header.parentElement;
+            card.classList.toggle('active');
+        }
+
+        function scrollToSec(id, el) {
+            const section = document.getElementById(id);
+            const navHeight = document.querySelector('.nav').offsetHeight;
+            const elementPosition = section.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // Active State Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.toggle('active', item.getAttribute('onclick').includes(id));
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
