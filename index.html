@@ -151,7 +151,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 60px;
+            gap: 40px;
         }
         
         .badge {
@@ -188,27 +188,6 @@
             max-width: 500px;
         }
 
-        .hero-right {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .hero-img {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--card);
-            box-shadow: var(--shadow);
-            background: var(--card-sub);
-            transition: transform 0.4s ease;
-        }
-        .hero-img:hover {
-            transform: scale(1.02);
-        }
-
         .refs-btn {
             display: inline-flex;
             align-items: center;
@@ -222,7 +201,6 @@
             text-decoration: none;
             transition: all 0.3s ease;
             box-shadow: 0 4px 14px rgba(90, 115, 96, 0.2);
-            white-space: nowrap;
         }
         .refs-btn:hover { 
             background: var(--accent-deep);
@@ -278,125 +256,47 @@
             margin-bottom: 10px;
         }
 
-        /* --- INTERACTIVE ROADMAP --- */
-        .roadmap {
-            position: relative;
-            padding: 20px 0;
-        }
-        .roadmap::before {
-            content: '';
-            position: absolute;
-            left: 21px;
-            top: 40px;
-            bottom: 40px;
-            width: 2px;
-            background: var(--border);
-        }
-        .roadmap-step {
-            position: relative;
-            margin-bottom: 24px;
-            padding-left: 65px;
-        }
-        .roadmap-node {
-            position: absolute;
-            left: 0;
-            top: 10px;
-            width: 44px;
-            height: 44px;
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            font-family: 'DM Mono', monospace;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--muted);
-            transition: all 0.4s ease;
-        }
-        .roadmap-step.active .roadmap-node {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-            box-shadow: 0 0 0 6px var(--accent-soft);
-        }
-        .roadmap-card {
-            background: var(--card);
-            border: 1px solid var(--border);
+        /* --- SPEECH TABLE --- */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
             border-radius: var(--radius);
-            padding: 24px 32px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .roadmap-card:hover {
-            border-color: var(--accent);
-            transform: translateX(5px);
-        }
-        .roadmap-step.active .roadmap-card {
-            border-color: var(--accent);
+            background: var(--card);
             box-shadow: var(--shadow);
+            border: 1px solid var(--border);
         }
-        .step-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        .speech-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
         }
-        .step-icon {
-            flex-shrink: 0;
-            width: 36px;
-            height: 36px;
-            color: var(--accent);
-            transition: transform 0.3s ease;
-        }
-        .roadmap-step.active .step-icon {
-            transform: scale(1.1);
-        }
-        .step-title-group {
-            flex: 1;
-        }
-        .step-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--text-hi);
-        }
-        .step-subtitle {
-            font-family: 'DM Mono', monospace;
-            font-size: 12px;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-top: 2px;
-            letter-spacing: 0.05em;
-        }
-        .step-details {
-            display: none;
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            animation: fadeIn 0.4s ease;
-        }
-        .roadmap-step.active .step-details {
-            display: block;
-        }
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .detail-item h5 {
+        .speech-table th {
+            background: var(--card-sub);
+            padding: 24px 20px;
+            text-align: left;
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--muted);
-            margin-bottom: 8px;
+            color: var(--accent);
+            letter-spacing: 0.12em;
             font-weight: 700;
+            border-bottom: 1px solid var(--border);
         }
-        .detail-item p {
-            font-size: 14px;
-            line-height: 1.5;
+        .speech-table td {
+            padding: 30px 20px;
+            font-size: 15px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
             color: var(--text);
+        }
+        .speech-table tr:last-child td { border-bottom: none; }
+        .speech-table tr:hover { background: #fdfdfd; }
+        
+        .part-name {
+            font-weight: 700;
+            color: var(--text-hi);
+            font-size: 17px;
+            margin-bottom: 6px;
+            display: block;
         }
 
         /* --- EXPERIENCE CARDS --- */
@@ -519,6 +419,15 @@
             line-height: 1.4;
         }
 
+        /* --- HIGHLIGHT --- */
+        .highlight-text {
+            color: var(--accent-deep);
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-color: var(--accent);
+        }
+
         /* --- FOOTER --- */
         .footer {
             background: #f1f3f0;
@@ -552,17 +461,11 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 850px) {
-            .hero { flex-direction: column; text-align: center; padding: 60px 24px; gap: 40px; }
-            .hero-right { margin-top: 0; }
-            .hero-img { width: 200px; height: 200px; }
+            .hero { flex-direction: column; text-align: center; padding: 60px 24px; }
+            .hero-right { margin-top: 20px; }
             .container { padding: 0 24px; }
             .nav { padding: 0 10px; }
             .contact-grid { gap: 40px; }
-            .roadmap::before { left: 16px; }
-            .roadmap-step { padding-left: 55px; }
-            .roadmap-node { width: 34px; height: 34px; left: 0; }
-            .step-icon { width: 28px; height: 28px; }
-            .step-title { font-size: 19px; }
         }
     </style>
 </head>
@@ -594,7 +497,6 @@
             <p class="hero-role">AI Trainer • Digital Strategist • Academic Coach.</p>
         </div>
         <div class="hero-right">
-            <img src="https://i.ibb.co/svDzb5kp/Untitled.png" alt="Jaśmina Kasenko" class="hero-img">
             <a href="https://drive.google.com/drive/folders/1JE_uKaCPFuhV143zciaH-rX01DHVTx3k?usp=sharing" target="_blank" class="refs-btn">
                 Zobacz Referencje
             </a>
@@ -609,7 +511,7 @@
             <p>Działam w oparciu o <span class="highlight-text">aktywne nauczanie</span> oraz <span class="highlight-text">uczenie przez robienie (learning by doing)</span>. Wierzę, że technologia AI staje się użyteczna tylko wtedy, gdy uczestnik potrafi samodzielnie wypracować rozwiązanie w trakcie warsztatu.</p>
         </div>
         
-        <!-- SECTION 01: ROADMAP PLAN -->
+        <!-- SECTION 01: SPEECH PLAN -->
         <section id="speech">
             <div class="section-header">
                 <div class="section-num">01</div>
@@ -617,166 +519,64 @@
                 <div class="section-line"></div>
             </div>
             
-            <div class="roadmap">
-                <!-- STEP 1 -->
-                <div class="roadmap-step active">
-                    <div class="roadmap-node">01</div>
-                    <div class="roadmap-card" onclick="toggleRoadmap(this)">
-                        <div class="step-header">
-                            <div class="step-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.5"/><path d="M14 2v7.5"/><path d="M4.83 18a1 1 0 0 0 .86 1.5h12.62a1 1 0 0 0 .86-1.5L14 9.5h-4Z"/></svg>
-                            </div>
-                            <div class="step-title-group">
-                                <h4 class="step-title">Fundamenty & Eksperyment</h4>
-                                <p class="step-subtitle">Demistyfikacja LLM</p>
-                            </div>
-                        </div>
-                        <div class="step-details">
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <h5>Cel edukacyjny</h5>
-                                    <p>Rozróżniania realnych możliwości AI od medialnego szumu. Uczestnicy poznają „podstawy podstaw”, które pozwolą im zabłysnąć.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Wartość dla słuchacza</h5>
-                                    <p>Przedstawiam AI jako standardowe narzędzie pracy. Porządkujemy wiedzę.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Psychologia sukcesu</h5>
-                                    <p>Buduje pewność siebie u słuchacza. Otwiera na dalszą naukę poprzez szybki sukces.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- STEP 2 -->
-                <div class="roadmap-step">
-                    <div class="roadmap-node">02</div>
-                    <div class="roadmap-card" onclick="toggleRoadmap(this)">
-                        <div class="step-header">
-                            <div class="step-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-                            </div>
-                            <div class="step-title-group">
-                                <h4 class="step-title">Przegląd Narzędzi</h4>
-                                <p class="step-subtitle">Gemini, NotebookLM, Claude</p>
-                            </div>
-                        </div>
-                        <div class="step-details">
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <h5>Cel edukacyjny</h5>
-                                    <p>Top 3 narzędzia oraz ukryte sztuczki, które oszczędzają kilka godzin tygodniowo.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Wartość dla słuchacza</h5>
-                                    <p>Każdy uczestnik (od produkcji po usługi) znajdzie tu rozwiązanie swojego problemu.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Psychologia sukcesu</h5>
-                                    <p>Skupienie na uniwersalnych bolączkach (brak czasu) gwarantuje zaangażowanie.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- STEP 3 -->
-                <div class="roadmap-step">
-                    <div class="roadmap-node">03</div>
-                    <div class="roadmap-card" onclick="toggleRoadmap(this)">
-                        <div class="step-header">
-                            <div class="step-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h9l-1 9 10-12h-9l1-9z"/></svg>
-                            </div>
-                            <div class="step-title-group">
-                                <h4 class="step-title">Automatyzacja Live</h4>
-                                <p class="step-subtitle">Integracja CRM + AI</p>
-                            </div>
-                        </div>
-                        <div class="step-details">
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <h5>Cel edukacyjny</h5>
-                                    <p>Pokazanie, jak system sam przygotowuje ofertę po rozmowie z klientem dzięki połączeniu dwóch aplikacji.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Wartość dla słuchacza</h5>
-                                    <p>Udowadniam, że AI nie wymaga ogromnych budżetów ani sztabu programistów.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Psychologia sukcesu</h5>
-                                    <p>Inspiracja, którą każdy może odnieść do własnej pracy.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- STEP 4 -->
-                <div class="roadmap-step">
-                    <div class="roadmap-node">04</div>
-                    <div class="roadmap-card" onclick="toggleRoadmap(this)">
-                        <div class="step-header">
-                            <div class="step-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-                            </div>
-                            <div class="step-title-group">
-                                <h4 class="step-title">Bezpieczeństwo Danych</h4>
-                                <p class="step-subtitle">Metoda Sandbox</p>
-                            </div>
-                        </div>
-                        <div class="step-details">
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <h5>Cel edukacyjny</h5>
-                                    <p>Tworzenie bezpiecznej przestrzeni dla danych firmowych i zasad promptowania bez wycieków.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Wartość dla słuchacza</h5>
-                                    <p>Rozbrojenie najczęstszego lęku przed technologią.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Psychologia sukcesu</h5>
-                                    <p>Wiedza daje poczucie kontroli i bezpieczeństwa zawodowego.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- STEP 5 -->
-                <div class="roadmap-step">
-                    <div class="roadmap-node">05</div>
-                    <div class="roadmap-card" onclick="toggleRoadmap(this)">
-                        <div class="step-header">
-                            <div class="step-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
-                            </div>
-                            <div class="step-title-group">
-                                <h4 class="step-title">Strategia „Na Dziś”</h4>
-                                <p class="step-subtitle">Roadmapa wdrożenia</p>
-                            </div>
-                        </div>
-                        <div class="step-details">
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <h5>Cel edukacyjny</h5>
-                                    <p>Uczestnik wychodzi z gotową listą zadań i realną umiejętnością promptowania.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Wartość dla słuchacza</h5>
-                                    <p>Konkretny plan działania zwiększa merytoryczną wartość wystąpienia.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h5>Psychologia sukcesu</h5>
-                                    <p>Satysfakcja z użyteczności. Słuchacz wie dokładnie, co zrobić po powrocie do biura.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="table-wrapper">
+                <table class="speech-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Część wystąpienia</th>
+                            <th style="width: 30%;">Cel edukacyjny</th>
+                            <th style="width: 25%;">Wartość dla słuchacza</th>
+                            <th style="width: 20%;">Psychologia sukcesu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="part-name">Fundamenty & Eksperyment</span>
+                                <small style="color:var(--muted)">Demistyfikacja LLM</small>
+                            </td>
+                            <td>Rozróżniania realnych możliwości AI od medialnego szumu. Uczestnicy poznają „podstawy podstaw”, które pozwolą im zabłysnąć.</td>
+                            <td>Przedstawiam AI jako standardowe narzędzie pracy. Porządkujemy wiedzę.</td>
+                            <td>Buduje pewność siebie u słuchacza. Otwiera na dalszą naukę poprzez szybki sukces.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Przegląd Narzędzi</span>
+                                <small style="color:var(--muted)">Gemini, NotebookLM, Claude</small>
+                            </td>
+                            <td>Top 3 narzędzia oraz ukryte sztuczki, które oszczędzają kilka godzin tygodniowo.</td>
+                            <td>Każdy uczestnik (od produkcji po usługi) znajdzie tu rozwiązanie swojego problemu.</td>
+                            <td>Skupienie na uniwersalnych bolączkach (brak czasu) gwarantuje zaangażowanie.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Automatyzacja Live</span>
+                                <small style="color:var(--muted)">Integracja CRM + AI</small>
+                            </td>
+                            <td>Pokazanie, jak system sam przygotowuje ofertę po rozmowie z klientem dzięki połączeniu dwóch aplikacji.</td>
+                            <td>Udowadniam, że AI nie wymaga ogromnych budżetów ani sztabu programistów.</td>
+                            <td>Inspiracja, którą każdy może odnieść do własnej pracy.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Bezpieczeństwo Danych</span>
+                                <small style="color:var(--muted)">Metoda Sandbox</small>
+                            </td>
+                            <td>Tworzenie bezpiecznej przestrzeni dla danych firmowych i zasad promptowania bez wycieków.</td>
+                            <td>Rozbrojenie najczęstszego lęku przed technologią.</td>
+                            <td>Wiedza daje poczucie kontroli i bezpieczeństwa zawodowego.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="part-name">Strategia „Na Dziś”</span>
+                                <small style="color:var(--muted)">Roadmapa wdrożenia</small>
+                            </td>
+                            <td>Uczestnik wychodzi z gotową listą zadań i realną umiejętnością promptowania.</td>
+                            <td>Konkretny plan działania zwiększa merytoryczną wartość wystąpienia.</td>
+                            <td>Satysfakcja z użyteczności. Słuchacz wie dokładnie, co zrobić po powrocie do biura.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -946,19 +746,6 @@
         function toggleCard(header) {
             const card = header.parentElement;
             card.classList.toggle('active');
-        }
-
-        function toggleRoadmap(card) {
-            const step = card.parentElement;
-            const isActive = step.classList.contains('active');
-            
-            // Close all first
-            document.querySelectorAll('.roadmap-step').forEach(s => s.classList.remove('active'));
-            
-            // Open clicked if it wasn't open
-            if (!isActive) {
-                step.classList.add('active');
-            }
         }
 
         function scrollToSec(id, el) {
